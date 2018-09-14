@@ -18,6 +18,9 @@ import java.util.List;
 
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @CrossOrigin
 @RestController
 public class UserController {
@@ -47,10 +50,12 @@ public class UserController {
 //        }
 //    }
     @GetMapping("getAll")
-    public List<User> getAll(){
+    public List<User> getAll(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
       Example e=new Example(User.class);
       e.createCriteria().getAllCriteria();
       List<User> user=um.selectByExample(e);
+      System.out.println(httpServletRequest.getSession().getId());
+      httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
       return user;
 }
     @PostMapping("select")
@@ -107,13 +112,6 @@ public class UserController {
         Page<User> pageInfo = PageHelper.startPage(page, size);
         List<User> users = um.findAll();
         return pageInfo;
-        }
-        @GetMapping("/20180808")
-    public String emmmmmm(){
-        User u=new User();
-        u.setName("emmm");
-        System.out.println(u.getName());
-        return "emmmmmmmmmmmmmmmm";
         }
 //    @PostMapping("/save")
 //    public User saveu(){
