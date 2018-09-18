@@ -5,6 +5,7 @@ import com.example.shiroproject.Dao.GradeMapper;
 import com.example.shiroproject.Dao.UserMapper;
 import com.example.shiroproject.Entity.Grade;
 import com.example.shiroproject.Entity.User;
+import com.example.shiroproject.Util.ResponseUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import net.sf.json.JSONArray;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +31,8 @@ public class UserController {
     private GradeMapper gm;
     @Autowired
     private UserMapper um;
+    @Autowired
+    private ResponseUtil util;
 //    @Autowired
 //    private RedisTemplate redisTemplate;
 //    @Autowired
@@ -55,14 +59,15 @@ public class UserController {
       e.createCriteria().getAllCriteria();
       List<User> user=um.selectByExample(e);
       System.out.println(httpServletRequest.getSession().getId());
-      httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
+      util.setHeader(httpServletRequest,httpServletResponse);
       return user;
 }
     @PostMapping("select")
-    public List<User> select(@Param("name")String name){
+    public List<User> select(@Param("name")String name,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
         Example e=new Example(User.class);
         e.createCriteria().andEqualTo("name",name);
         List<User> user=um.selectByExample(e);
+        util.setHeader(httpServletRequest,httpServletResponse);
         return user;
     }
 

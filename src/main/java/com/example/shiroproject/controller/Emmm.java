@@ -21,8 +21,7 @@ public class Emmm {
 //        Cookie cookie= new Cookie("JSESSOPMOD",httpServletRequest.getSession().getId());
 //        cookie.setSecure(true);
 //        httpServletResponse.addCookie(cookie);
-        System.out.println(httpServletRequest.getSession().getId());
         httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
-        return ResultGenerator.genFailResult("沙雕");
+        return ResultGenerator.genFailResult("");
     }
 }
