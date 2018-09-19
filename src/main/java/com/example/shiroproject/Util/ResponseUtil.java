@@ -14,9 +14,8 @@ public class ResponseUtil {
         httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
         httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Max-Age","3600");
-//        Cookie cookie =new Cookie("JESSIONID",httpServletRequest.getSession().getId());
-//        httpServletResponse.addCookie(cookie);
-        httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
+        if (!httpServletRequest.getSession().getId().equals(httpServletRequest.getRequestedSessionId())) {
+            httpServletResponse.setHeader("Set-Cookie", "JSESSIONID=" + httpServletRequest.getSession().getId());
+        }
     }
 }

@@ -58,7 +58,6 @@ public class UserController {
       Example e=new Example(User.class);
       e.createCriteria().getAllCriteria();
       List<User> user=um.selectByExample(e);
-      System.out.println(httpServletRequest.getSession().getId());
       util.setHeader(httpServletRequest,httpServletResponse);
       return user;
 }
