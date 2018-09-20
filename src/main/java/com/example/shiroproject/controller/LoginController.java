@@ -46,8 +46,8 @@ public class LoginController {
     }
     @GetMapping("/redis")
     public void setValue() {
-        redisTemplate.opsForValue().set("fuzf","mady");
-
+        stringredisTemplate.opsForValue().set("fuzf","mady");
+        redisTemplate.opsForValue().set("mady","fuzf");
 
 //        Map<String ,String> maps=new HashMap<String ,String>();
 //        maps.put("user1","mady");
