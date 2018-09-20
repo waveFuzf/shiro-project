@@ -7,10 +7,12 @@ public class ShiroService {
 
     public String getPasswordByUsername(String username){
         switch (username){
+//            fuzf0206
             case "fuzf":
-                return "40b64582a14c046edee44a5d85837326";
+                return "2ae318ce6c8dd1995a815f2bd228cd9f";
+//            mady0115
             case "mady":
-                return "8c675549aac210af3536eaf60b1da737";
+                return "f466d242a5c6502e510c06cab14d2955";
             default:
                 return null;
         }

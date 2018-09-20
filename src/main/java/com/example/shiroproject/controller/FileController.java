@@ -29,7 +29,7 @@ public class FileController {
 //       return null;
         if (!file.isEmpty()) {
             String saveFileName = file.getOriginalFilename();
-            File saveFile = new File("C:\\Users\\YFZX-FZF-1777\\Desktop\\图片上传\\"+ saveFileName);
+            File saveFile = new File("C:\\Users\\90663\\Desktop\\新建文件夹\\"+ saveFileName);
             System.out.println(saveFile.getParentFile());
             if (!saveFile.getParentFile().exists()) {
                 saveFile.getParentFile().mkdirs();
