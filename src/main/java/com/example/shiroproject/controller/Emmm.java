@@ -17,11 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 public class Emmm {
     @RequestMapping("/emmm")
     public Result index(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
-        httpServletResponse.setStatus(403);
+        httpServletResponse.setStatus(401);
 //        Cookie cookie= new Cookie("JSESSOPMOD",httpServletRequest.getSession().getId());
 //        cookie.setSecure(true);
 //        httpServletResponse.addCookie(cookie);
-        httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
+//        httpServletResponse.setHeader("Set-Cookie","JSESSIONID="+httpServletRequest.getSession().getId());
+        httpServletResponse.setHeader("WWW-Authenticate","Basic realm='localhost:8080/doLogin'");
         return ResultGenerator.genFailResult("");
     }
 }
