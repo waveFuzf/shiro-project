@@ -1,7 +1,9 @@
 package com.example.shiroproject.controller;
 
+import com.example.shiroproject.Entity.Token;
 import com.example.shiroproject.Re.Result;
 import com.example.shiroproject.Re.ResultGenerator;
+import com.example.shiroproject.Util.TokenUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -11,12 +13,12 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+
+
 @CrossOrigin
 @RestController
 public class LoginController {
@@ -24,9 +26,10 @@ public class LoginController {
     private StringRedisTemplate stringredisTemplate;
     @Autowired
     private RedisTemplate redisTemplate;
-
+    @Autowired
+    private TokenUtil tokenUtil;
     @PostMapping("/doLogin")
-    public Result doLogin(String username, String password) {
+    public Result doLogin(String username, String password, HttpServletResponse httpServletResponse) {
         Subject subject = SecurityUtils.getSubject();
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(""), 2).toHex();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -36,7 +39,19 @@ public class LoginController {
             token.clear();
             return ResultGenerator.genFailResult("登录失败，用户名或密码错误！");
         }
+        Token redistoken=tokenUtil.createToken(username);
+        httpServletResponse.setHeader("Set-cookie",redistoken.getToken());
         return ResultGenerator.genSuccessResult("登录成功");
+    }
+    @RequestMapping("logout")
+    public String logOut(String username){
+        tokenUtil.deleteToken(username);
+        return "退出成功！";
+    }
+    @RequestMapping("checktoken")
+    public String checkToken(String username,String token){
+        boolean checkuser=tokenUtil.checkToken(new Token(username,token));
+        return String.valueOf(checkuser);
 
     }
     @RequestMapping("/emmm")
@@ -46,8 +61,8 @@ public class LoginController {
     }
     @GetMapping("/redis")
     public void setValue() {
-        redisTemplate.opsForValue().set("fuzf","mady");
-
+        stringredisTemplate.opsForValue().set("fuzf","mady");
+        redisTemplate.opsForValue().set("mady","fuzf");
 
 //        Map<String ,String> maps=new HashMap<String ,String>();
 //        maps.put("user1","mady");
