@@ -1,12 +1,13 @@
 package com.example.shiroproject.Entity;
 
 import lombok.Data;
-import lombok.Getter;
+import javax.persistence.Id;
 
 import java.util.List;
 
 @Data
 public class User {
+    @Id
     private Integer id;
 
     private String name;
